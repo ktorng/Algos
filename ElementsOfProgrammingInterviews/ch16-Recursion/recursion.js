@@ -67,3 +67,28 @@ function nQueensDriver(n) {
         }
     }
 }
+
+// Problem 16.2 - Generate Permutations
+function permutationDriver(arr) {
+    var perms = [];
+
+    computePermutations(arr, perms, 0);
+
+    return perms;
+
+    function computePermutations(arr, perms, i) {
+        if(i === arr.length) perms.push(arr.slice());
+        
+        for(var j = i; j < arr.length; j++) {
+            swap(A, i, j);
+            computePermutations(arr, perms, i+1);
+            swap(A, j, i);
+        }
+    }
+
+    function swap(A, i, j) {
+        var temp = A[i];
+        A[i] = A[j];
+        A[j] = temp;
+    }
+}
