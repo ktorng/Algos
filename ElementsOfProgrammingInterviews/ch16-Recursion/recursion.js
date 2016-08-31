@@ -92,3 +92,39 @@ function permutationDriver(arr) {
         A[j] = temp;
     }
 }
+
+// Problem 16.3 - PowerSet
+function powerSetRecursive(A) {
+    if(A.length === 1) return [[], A[0]];
+
+    var all = []; 
+
+    for(var i = 0; i < A.length; i++) {
+        var AwithoutI = A.slice();
+        AwithoutI.splice(i, 1);
+        var allSetsWithoutA = powerSetRecursive(AwithoutI);
+        all.concat(allSetsWithoutA);
+        allsetsWithoutA.forEach((s) => {
+            s.concat(A[i]);
+            all.concat(s);
+        });
+    }
+
+    return all;
+}
+
+function powerSetDriverIterative(A) {
+    var sets = [];
+    for(var i = 0; i < Math.pow(2, A.length); i++) {
+        var set = [];
+        var j = 0;
+        while((i >> j) & 1 !== 0) {
+            set.push(A[j]);
+            j++;
+        }
+
+        sets.push(set.slice());
+    }
+
+    return sets;
+}
