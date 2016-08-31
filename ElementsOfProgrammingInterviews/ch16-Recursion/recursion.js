@@ -177,7 +177,11 @@ function generateMatchParens(k) {
     if(k === 0) return set.add("");
 
     var previousSet = generateMatchParens(k-1);
-    previousSet.forEach((s) => { set.add('('+s+')', '()'+s, s+'()') });
+    previousSet.forEach((s) => {
+        set.add('('+s+')');
+        set.add('()' + s);
+        set.add(s + '()');
+    });
 
     return set;
 }
