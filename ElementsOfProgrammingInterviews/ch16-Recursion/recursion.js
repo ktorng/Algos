@@ -68,7 +68,7 @@ function nQueensDriver(n) {
     }
 }
 
-// Problem 16.2 - Generate Permutations
+// Problem 16.3 - Generate Permutations
 function permutationDriver(arr) {
     var perms = [];
 
@@ -93,7 +93,26 @@ function permutationDriver(arr) {
     }
 }
 
-// Problem 16.3 - PowerSet
+// Problem 16.4 - PowerSet
+function powerSetRecursiveDriver(A) {
+    var powerSet = [];
+    generatePowerSet(A, i, selected, powerset);
+    return powerSet;
+
+    function generatePowerSet(A, i, selected, powerset) {
+        if(selected.length === A.length) {
+            powerset.push(selected.slice());
+            return;
+        }
+        // Generate powerset with the current element
+        selected.push(A[i]);
+        generatePowerSet(A, i+1, selected, powerset);
+        // Generate the powerset without the current element
+        selected.pop();
+        generatePowerSet(A, i+1, selected, powerset);
+    }
+}
+
 function powerSetRecursive(A) {
     if(A.length === 1) return [[], A[0]];
 
@@ -127,4 +146,24 @@ function powerSetDriverIterative(A) {
     }
 
     return sets;
+}
+
+// Problem 16.5 - Generate all k-subsets
+function generateKSubsetsDriver(k, n, set) {
+    var subsets = [];
+    generateKSubsets(n, k, set, 0, subsets);
+    return subsets;
+
+    function generateKSubsets(n, k, set, i, selected) {
+        if(selected.length === k) {
+            set.push(selected.slice());
+            return;
+        }
+
+        for(var j = i; j < n; j++) {
+            selected.push(set[j]);
+            generateKSubsets(n, k, set, i+1, selected);
+            selected.pop(set[j]);
+        }
+    }
 }
