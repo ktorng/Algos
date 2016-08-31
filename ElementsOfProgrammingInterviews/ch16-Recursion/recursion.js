@@ -167,3 +167,17 @@ function generateKSubsetsDriver(k, n, set) {
         }
     }
 }
+
+// Problem 16.6 - Generate string of match parens
+function generateMatchParens(k) {
+    // 1. ( + s + )
+    // 2. () + s
+    // 3. s + ()
+    var set = new Set();
+    if(k === 0) return set.add("");
+
+    var previousSet = generateMatchParens(k-1);
+    previousSet.forEach((s) => { set.add('('+s+')', '()'+s, s+'()') });
+
+    return set;
+}
