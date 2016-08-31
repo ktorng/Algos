@@ -23,3 +23,47 @@ function computeSteps(stacks, n, src, to, temp) {
         computeSteps(stacks, n-1, temp, to, src);
     }
 }
+
+// Problem 16.2 - NQueens
+function nQueensDriver(n) {
+    var result = [];
+    
+    solveNQueens(result, n, 0, []);
+
+    return result;
+
+    function solveNQueens(result, n, row, colPlacement) {
+        // row is a counter to ensure N elements in colPlacement
+        if(row === n) {
+            result.push(colPlacement.slice());
+        } else {
+            // Try placing a queen at every column for current row
+            // If valid, continue down the recursion tree
+            // Remove column placement prior to next iteration
+            for(var col = 0; col < n; ++col) {
+                colPlacement.push(col);
+                if(isValid(colPlacement))
+                    solveNQueens(result, n, row+1, colPlacement)
+                colPlacement.pop();
+            }
+        }
+
+        function isValid(colPlacement) {
+            // Checks all the current positions vs the latest added
+            // 0. Implicity there can be no row conflicts because each element in colPlacement represents a different row
+            // 1. Checks if there is a column conflict
+                // via diff === 0
+            // 2. Checks if there is a diagonal conflict
+                // via diff === lastRowIndex - i 
+            var lastRowIndex = colPlacemient.length - 1;
+            for(var i = 0; i < colPlacement.length; i++) {
+                var diff = Math.abs(colPlacement[i] - colPlacement[lastRowIndex]);
+                if(diff === 0 || diff === lastRowIndex - i) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    }
+}
