@@ -21,32 +21,40 @@ function numScoreCombinations(score, pointsArray) {
   return count;
 }
 
-console.log(numScoreCombinations(1000, [2, 3, 7]));
+//console.log(numScoreCombinations(1000, [2, 3, 7,]));
 
 // with DP
-function numScoreCombinationsDP(score, pointsArray) {
-  console.time("withDP")
-  const cache = new Map();
+function numScoreCombinationsDP(score, options) {
+  console.time('DP')
+  var combinations = new Array(options.length);
 
-  const buildCombos = (curr, arr) => {
-    const key = `${curr} ${arr}`;
-    if (cache[curr] && cache[curr][arr]) return cache[curr][arr];
-    if (!cache[curr]) cache[curr] = new Map();
-
-    if (curr === score) {
-      cache[curr][arr] = 1;
-    } else if (curr < score) {
-      cache[curr][arr] = arr
-        .map((e, i) => buildCombos(curr + e, arr.slice(i)))
-        .reduce((sum, e) => sum += e);
-    } else {
-      cache[curr][arr] = 0;
-    }
-    return cache[curr][arr];
+  // row is the options, column is the score from 0 to score
+  for(var i = 0; i < combinations.length; i++) {
+    combinations[i] = new Array(score+1).fill(0);
   }
 
-  console.timeEnd("withDP")
-  return buildCombos(0, pointsArray);
+  for(var option = 0; option < options.length; option++) {
+    combinations[option][0] = 1;
+    for(var currentScore = 1; currentScore <= score; currentScore++) {
+      var withoutPlay, withPlay;
+      if(option - 1 >= 0) {
+        withoutPlay = combinations[option-1][currentScore];
+      } else {
+        withoutPlay = 0;
+      }
+
+      if(currentScore >= options[option]) {
+        withPlay = combinations[option][currentScore - options[option]];
+      } else {
+        withPlay = 0;
+      }
+
+      combinations[option][currentScore] = withoutPlay + withPlay;
+    }
+  }
+
+  console.timeEnd('DP')
+  return combinations[options.length-1][score];
 }
 
-console.log(numScoreCombinationsDP(1000, [2, 3, 7]));
+console.log(numScoreCombinationsDP(10000, [2, 3, 7, 15, 20]));
