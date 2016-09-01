@@ -185,3 +185,31 @@ function generateMatchParens(k) {
 
     return set;
 }
+
+// Problem 16.10 - Compute the Diameter of a tree
+function computeHeightAndDiameter(root) {
+    var diameter = Number.NEGATIVE_INFINITY;
+    // Base case is heights array. If there are no root children, the for loop is skipped
+    var heights = [0, 0];
+
+    for(var e of root.edges) {
+        var heightDiameter = computeHeightAndDiameter(e.root);
+
+        // Manage the max height seen so far
+        var heightWithRootLength = heightDiameter + e.length;
+        if(heightWithRootLength > heights[0]) {
+            heights[1] = heights[0];
+            heights[0] = heightWithRootLength;
+        } else if (heightWithRootLength > heights[1]) {
+            heights[1] = heightWithRootLength;
+        }
+        
+        // Keep max diameter seen
+        diameter = Math.max(diameter, heightDiameter.diameter);
+    }
+
+    return {
+        diameter: Math.max(diameter, heights[0] + heights[1]),  // either max diameter of children trees w/out root  OR max height of children trees + root edge
+        height: height[0] // take the max height
+    }
+}
