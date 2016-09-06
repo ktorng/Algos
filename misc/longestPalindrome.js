@@ -84,15 +84,33 @@ var longestPalindrome = function(s) {
         // R - i = centerRightPosition - currentRight Position
         // i = currentRightPosition
         // C = centerPosition, R = centerRightPosition
-        P[i] = (R > i) ? Math.min(R-i, P[i_mirror]) : 0; // R-i is max it can be. If i_mirror is bigger then its outside the palindrome centered on C
+        // R-i is max it can be if the mirror expands past the Left boundary
+
+        // 0. Mirror is 2C-i
+        // 1. Check if its in range
+            // Set to min of R-i or mirror
+        // 2. Expand
+        // 3. Update center and R if out of range
+
+        /// ------------
+
+        // 1. Check if the current position is within bounds of the range from the center 
+        // This provides the minimum value
+        if(i < R) {
+            P[i] = Math.min(R - i , P[i_mirror]);
+        } else {
+            P[i] = 0;
+        }
         
-        // Attempt to expand palindrome centered at i
-        while(T[i + 1 + P[i]] === T[i - 1 - P[i]]) {
+        // 2. Attempt to expand palindrome centered at i
+        // Increment P[i] for every pair that matches
+        while(T[i + (1 + P[i])] === T[i - (1 + P[i])]) {
             P[i]++;
         }
         
-        // If palindrome centered at i expands past R,
+        // 3. If palindrome centered at i expands past R,
         // adjust center based on expanded palindrome
+        // C becomes new center. R is now i + P[i]
         if(i + P[i] > R) {
             C = i;
             R = i + P[i];
