@@ -57,3 +57,38 @@ function lca(root, v1, v2) {
         return root;
     }
 }
+
+// 10.4 - Find the LCA with access to parent on a node
+function lcaWithParent(n1, n2) {
+    var d1 = getDepth(n1);
+    var d2 = getDepth(n2);
+
+    // Arbitrarily set d1 to the deeper height
+    if(d1 > d2) {
+        var temp = n1;
+        n1 = n2;
+        n2 = temp;
+    }
+
+    var depthDiff = Math.abs(d1 - d2);
+    // Move upward from deep node
+    while(depthDiff-- > 0) n1 = n1.parent;
+
+    // Until the nodes parent are the same, traverse upwards on both
+    while(n1 != n2) {
+        n1 = n1.parent;
+        n2 = n2.parent;
+    }
+
+    return n1;
+   
+    function getDepth(node) {
+        var depth = 0;
+        while(node.parent != null) {
+            node = node.parent;
+            depth++;
+        }
+
+        return depth;
+    }
+}
