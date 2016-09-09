@@ -32,3 +32,15 @@ function driver(root) {
         }
     }
 }
+
+// 10.2 - Check if a tree is symmetric
+// Short circuits on 1) l != r, 2) left not symmetric, 3) right not symmetric
+function driver(root) {
+    return checkSymmetric(root.left, root.right);
+
+    function checkSymmetric(l, r) {
+        if(!l && !r) return true;
+
+        return l.data === r.data && checkSymmetric(l.left, r.left) && checkSymmetric(l.right, r.right);
+    }
+}
