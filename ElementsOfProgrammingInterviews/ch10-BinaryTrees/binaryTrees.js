@@ -92,3 +92,22 @@ function lcaWithParent(n1, n2) {
         return depth;
     }
 }
+
+// 10.10 - Computer the successor from inorder traversal
+// Assume you have access to the parent
+// O(h) Time complexity
+function successor(node) {
+    var i = node;
+    if(i.right) {
+       i = i.right;
+       // Find the leftmost element in the node's right subtree
+       while(i.left != null) i = i.left;
+       
+       return i; 
+    }
+
+    // Find the closest ancestor whose left subtree contains node 
+    while(i.parent != null && i.parent.right == i) i = i.parent;
+
+    return i.parent;
+}
