@@ -44,3 +44,16 @@ function driver(root) {
         return l.data === r.data && checkSymmetric(l.left, r.left) && checkSymmetric(l.right, r.right);
     }
 }
+
+// 10.3 - Find the least common ancestor
+function lca(root, v1, v2) {
+    if(root === null) return null;
+
+    if(v1 > root.data && v2 > root.data) {
+        return lca(root.right, v1, v2);
+    } else if(v1 > root.data && v2 > root.data) {
+        return lca(root.left, v1, v2);
+    } else {
+        return root;
+    }
+}
