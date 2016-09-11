@@ -186,3 +186,25 @@ function binaryTreeFromPreOrderInOrder(preOrder, inOrder) {
         this.right = null;
     }
 }
+
+// 10.13 - Reconstruct binary tree from preorder traversal with markers
+// Ex. HBF$$EA$$$C$D$GI$$$
+// Uses recursion for call stack and a global variable
+var ix = 0;
+function reconstructFromPreorder(preOrder) {
+    var key = preorder[ix];
+    ++ix;
+    if(key === null) return null;
+
+    var newNode = new BinaryTreeNode(key);
+    newNode.left = reconstructFromPreorder(preOrder); 
+    newNode.right = reconstructFromPreorder(preOrder);
+
+    return newNode;
+
+    function BinaryTreeNode(data) {
+        this.data = data;
+        this.left = null;
+        this.right = null;
+    }
+}
