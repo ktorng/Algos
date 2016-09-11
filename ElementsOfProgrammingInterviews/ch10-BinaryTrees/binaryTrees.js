@@ -145,3 +145,44 @@ function inOrderTraversalWithConstantSpace(root) {
 
     return result;
 }
+
+// 10.12 - Reconstruct binary tree from preorder and inorder traversal arr data
+function binaryTreeFromPreOrderInOrder(preOrder, inOrder) {
+    var hash = {};
+    for(var i = 0; i < inorder.length; i++) hash[inOrder] = i; // hash the index of the value in inOrder
+
+    return buildTree(preOrder, 0, preOrder.length, 0, inOrder.length, hash);
+
+    function buildTree(
+        preOrder, preStart, preEnd, inStart, inEnd, inOrderIxHash) {
+        // Example 
+        // pre - HBFEACDGI
+        // in  - FBAEHCDIG
+        // First of pre is H 
+            // H is at index 4 of inorder
+            // There are 4 nodes to the left of it, so the left subtree has a size of 4 
+        // Therefore, 
+        // left subtree = FBAE 
+        // root = H 
+        // right subtree = CDIG
+        if(preEnd <= preStart || inEnd <= inStart) return null; // base case
+
+        var rootInOrderIdx = inOrderIxHash[preOrder[preStart]]; // get root inorder idx
+        var leftSubtreeSize = rootInOrderIdx - inStart;
+        var rightTreeStartIx = preStart + leftSubtreeSize + 1;
+
+        var newNode = new BinaryTreeNode();
+        newNode.data = preOrder[preStart];
+        newNode.left = buildTree(preOrder, preStart+1, rightTreeStartIx, inStart, rootInOrderIdx, inOrderIxHash);
+        newNode.right = buildTree(preOrder, rightTreeStartIx, preEnd, rootInOrderIdx+1, inEnd, inOrderIxHash);
+        
+        return newNode;
+    }
+
+    // Private Node constructor
+    function BinaryTreeNode(data) {
+        this.data = data;
+        this.left = null;
+        this.right = null;
+    }
+}
