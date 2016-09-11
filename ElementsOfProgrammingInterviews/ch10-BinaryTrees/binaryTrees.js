@@ -111,3 +111,37 @@ function successor(node) {
 
     return i.parent;
 }
+
+// 10.11 - Inorder traversal with O(1) space
+function inOrderTraversalWithConstantSpace(root) {
+    var curr = root;
+    var prev = null;
+    var result = [];
+
+    while(curr !== null) {
+        var next = null;
+        if(curr.parent === prev) {
+            // We came down to current from previous
+            // Explore left, then right
+            if(curr.left !== null) {
+                next = curr.left;
+            } else {
+                result.push(curr.data);
+                // Done with left, go right if right is not empty
+                next = (curr.right !== null) ? curr.right : curr.parent; 
+            }
+        } else if(curr.left === prev) {
+            // If we go back up from left subtree, print curr and go right if it exists
+            result.push(curr.data);
+            next = (curr.right !== null) ? curr.right: curr.parent;
+        } else {
+            // If we can from the right, go up
+            next = curr.parrent;
+        }
+
+        prev = curr;
+        curr = next;
+    }
+
+    return result;
+}
