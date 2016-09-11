@@ -35,3 +35,31 @@ function canLetterBeConstructedFromMagazine(letter, magazine) {
 
     return Object.keys(freq).length === 0;
 }
+
+// 13.4 - Compute LCA optimizing for close ancestors
+function optimizedLCA(n1, n2) {
+    var seen = {};
+    while(n1 !== null && n2 !== null) {
+        // Store parents in a hash as you traverse upwards.
+        // If there is already the node in the hash, then that node is the LCA
+        if(n1 !== null) {
+            if(seen[n1.data]) {
+                return n1;
+            } else {
+                seen[n1.data] = true;
+            }
+            n1 = n1.parent;
+        }
+        
+        if(n2 !== null) {
+            if(seen[n2.data]) {
+                return n2;
+            } else {
+                seen[n2.data] = true;
+            }
+            n2 = n2.parent;
+        }
+    }
+
+    return null;
+}
