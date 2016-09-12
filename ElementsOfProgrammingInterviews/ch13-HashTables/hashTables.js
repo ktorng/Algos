@@ -112,3 +112,30 @@ function findSmallestSubarrayCoveringAll(p, set) {
 
     return [start, end];
 }
+
+// 13.10 - Find the length of a longest contained interval
+function lengthOfLongestContainedInterval(arr) {
+    var set = new Set(arr);
+    var iter = set[Symbol.iterator];
+    var maxSize = 0;
+    while(set.size !== 0) {
+        var e = iter.next().value;
+        set.delete(e);
+
+        var lower = e - 1;
+        while(set.has(lower)) {
+            set.delete(lower);
+            lower--;
+        }
+
+        var upper = e + 1;
+        while(set.has(upper)) {
+            set.delete(upper);
+            upper++;
+        }
+    
+        maxSize = Math.max(maxSize, upper-lower+1);
+    }
+
+    return maxSize;
+}
