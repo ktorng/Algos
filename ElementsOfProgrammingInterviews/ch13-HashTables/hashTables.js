@@ -63,3 +63,18 @@ function optimizedLCA(n1, n2) {
 
     return null;
 }
+
+// 13.6 - Find the nearest repeated entries in an array
+function nearestRepeatedEntry(strArr) {
+    var charToLoc = {};
+    var min = Infinity;
+    for(var i = 0; i < strArr.length; i++){
+        var c = strArr[i];
+        if(charToLoc.hasOwnProperty(c)) {
+            var lastIx = charToLoc[c];
+            if(i - charToLoc[c] <  min) min = i - charToLoc[c];
+        }
+    }
+
+    return min;
+}
