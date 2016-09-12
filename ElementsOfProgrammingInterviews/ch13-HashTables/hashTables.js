@@ -78,3 +78,37 @@ function nearestRepeatedEntry(strArr) {
 
     return min;
 }
+
+// 13.7 - Find smallest subarray covering all values
+// set of k length
+function findSmallestSubarrayCoveringAll(p, set) {
+    var strToIx = {};
+    var firstIx = -1;
+    var seen = 0;
+    var start = -1, end = -1;
+    for(var i = 0; i < set.length; i++)
+        strToIx[set[i]] = -1;
+
+    for(var i = 0; i < p.length; i++) {
+        var s = p[i];
+        if(strToIx.hasOwnProperty(s)) {
+            var x = strToIx[s];
+            // If the current s is in the set
+            if(x === -1) {
+                if(firstIx === -1) firstIx = i; // one time set 
+                strToIx[s] = i; // set to the last seen location
+                seen++;
+            }
+        }
+
+        // If we've seen all in the set, start updating the bounds of the subarray
+        if(seen === set.length) {
+            if(start === -1 && end === -1 || i - firstIx < end - start) {
+                start = firstIx;
+                end = i;
+            }
+        }
+    }
+
+    return [start, end];
+}
