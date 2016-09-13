@@ -90,3 +90,36 @@ function dijkstraSrcTarget(G, src, tgt) {
         }
     }
 }
+
+// Bellman-ford Algorithm
+function bellmanFord(G, start) {
+    var distances = new Array(G.vertices.length).fill(Infinity);
+    var prev = new Array(G.vertices.length).fill(null);
+    var edges = G.edges;
+
+    distances[start] = 0;
+
+    for(var i = 0; i < G.vertices.length - 1; i++) {
+        for(var edge of edges) {
+            var u = edge.src;
+            var v = edge.tgt;
+            var w = edge.weight;
+            if(distances[u] + w < distances[v]) {
+                distances[v] = distance[u] + w;
+                prev[v] = u;
+            }
+        }
+    }
+
+    for(var edge of edges) {
+        var u = edge.src, v = edge.tgt, w = edge.weight;
+        if(distance[u] + w < distance[v]) {
+            throw("Negative Cycle Error");
+        }
+    }
+
+    return {
+        distances: distances,
+        prev: prev
+    }
+}
