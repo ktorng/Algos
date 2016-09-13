@@ -42,3 +42,60 @@ function MSTPrims(G) {
     for(var i = 0; i < parent.length; i++)
         console.log(i, " - ", parent[i]);
 }
+
+// Kruskal's Algorithm
+// 1. Sort edges
+// 2. Starting with minimum weight edge, add to MST if there is no cycle (using union-find)
+// 3. Continue until there are E = V-1 in the MST
+function kruskal(G) {
+    var result = new Array(G.vertices.length);
+    var sortedEdges = G.edges.sort(); // in order of incrasing weight;
+    var subsets = new Array(G.vertices.length).fill(new SubSet());
+    for(var i = 0; i < subsets.length; i++) {
+        subsets[i].parent = i;
+        subsets[i].rank = 0;
+    }
+
+    var e = 0, i = 0; // e is edge count, is i index on sorted edges
+    while (e < V - 1) {
+        var next = sortedEdges[i++];
+        var x = findRank(subsets, next.src);
+        var y = findRank(subsets, next.dest);
+
+        if(x !== y) {  // Add to result
+            result[e++] = next;
+            unionRank(subsets, x, y);
+        }
+    }
+}
+
+// Union Find Algorithm
+function find(parent, i) {
+    if(parent[i] === -1) return i;
+    return find(parent, parent[i]);
+}
+
+function union(parent, a, b) {
+    var aParent = find(parent, a);
+    var bParent = find(parent, b);
+    parent[aParent] = bParent;
+}
+
+function findRank(subsets, i) {
+    if(subsets[i].parent !== i) subsets[i].parent = find(subsets, subsets[i].parent);
+    return subsets[i].parent;
+}
+
+function unionRank(subsets, a, b) {
+    var aRoot = findRank(subsets, a);
+    var bRoot = findRank(subsets, b);
+
+    if(subsets[aRoot].rank < subsets[bRoot].rank) { // If root of a's rank is less than b's root rank, set parent to b
+        subsets[aRoot].parent = bRoot;
+    } else if(subsets[aRoot].rank > subsets[bRoot].rank) { // case where b root rank is lower than a root rank
+        subsets[bRoot].parent = aRoot;
+    } else {
+        subsets[bRoot].parent = aRoot; // if a root and b root rank are both equal, arbitrarily make aroot the higher rank
+        subsets[aRoot].rank++;
+    }
+}
