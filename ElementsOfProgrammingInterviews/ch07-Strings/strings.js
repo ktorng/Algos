@@ -22,3 +22,29 @@ function baseConversion(str, b1, b2) {
 
     return res;
 }
+
+// 7.8 - Look and Say
+function lookAndSay(n) {
+    var lastString = "1";
+
+    for(var times = 0; times < n - 1; times++) {
+        var newString = "";
+        var c = lastString[0], cCount = 0;
+
+        for(var i = 0; i < lastString.length; i++) {
+            if(lastString[i] === c) {
+                cCount++;
+            } else {
+                newString += cCount + c;
+                c = lastString[i];
+                cCount = 1;
+            }
+        }
+
+        if(cCount > 0) newString += cCount + c;
+
+        lastString = newString;
+    }
+
+    return lastString;
+}
