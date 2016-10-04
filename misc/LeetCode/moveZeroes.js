@@ -20,7 +20,7 @@ var moveZeroes = function(nums) {
   while (a < nums.length - 1) {
     if (nums[a] === 0) {
       if (nums[b] === 0) {
-        if (b === nums.length - 1) return nums;
+        if (b === nums.length - 1) return;
         b++;
       } else {
         // swap
@@ -31,10 +31,9 @@ var moveZeroes = function(nums) {
       }
     } else {
       a++;
+      if (b < a) b = a;
     }
   }
-
-  return nums;
 }
 
 console.log(moveZeroes([0,1,0,3,12]))

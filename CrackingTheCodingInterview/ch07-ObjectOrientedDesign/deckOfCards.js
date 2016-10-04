@@ -30,6 +30,8 @@ deckOfCards.prototype.shuffle = function() {
 }
 
 
+
+
 const deck = new deckOfCards();
 console.log(deck.shuffle());
 console.log(deck.flipAll());
