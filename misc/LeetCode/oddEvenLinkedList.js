@@ -23,6 +23,8 @@ The first node is considered odd, the second node even and so on ...
  * @param {ListNode} head
  * @return {ListNode}
  */
+
+/*
 var oddEvenList = function(head) {
   if (!head) return null;
 
@@ -51,5 +53,25 @@ var oddEvenList = function(head) {
       i += 2;
   }
 
+  return head;
+};
+*/
+var oddEvenList = function(head) {
+  if (!head) return null;
+
+  // 4 pointers
+  let odd = head;
+  let even = head.next;
+  let evenHead = head.next;
+
+  while (even && even.next) {
+    odd.next = even.next;
+    odd = odd.next;
+    even.next = odd.next;
+    even = even.next;
+  }
+
+  // add even list to end of odd list
+  odd.next = evenHead;
   return head;
 };

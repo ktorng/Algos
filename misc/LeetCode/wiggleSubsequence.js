@@ -26,24 +26,16 @@ Can you do it in O(n) time?
  */
 var wiggleMaxLength = function(nums) {
   // traverse through nums
-  // keep track of direction of wiggle and prev num
+  // keep track of direction of wiggle and prev diff
   if (nums.length < 2) return nums.length
-  let wiggle = 1;
-  let prevDir = null;
-  let currDir;
+  let prevDiff = nums[1] - nums[0];
+  let wiggle = prevDiff !== 0 ? 2 : 1;
 
-  for (let i = 1; i < nums.length; i++) {
-    if (nums[i] - nums[i-1] > 0) {
-      currDir = 'u';
-    } else if(nums[i] - nums[i-1] < 0) {
-      currDir = 'd';
-    } else {
-      currDir = null;
-    }
-
-    if (prevDir !== currDir) {
-      if (currDir) wiggle++;
-      prevDir = currDir;
+  for (let i = 2; i < nums.length; i++) {
+    let diff = nums[i] - nums[i-1];
+    if ((diff > 0 && prevDiff <= 0) || (diff < 0 && prevDiff >= 0)) {
+      wiggle++;
+      prevDiff = diff;
     }
   }
 
