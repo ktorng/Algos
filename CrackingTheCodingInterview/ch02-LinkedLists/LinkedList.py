@@ -32,6 +32,8 @@ class LinkedList:
 
         self.tail = node
 
+        return node
+
     # Remove first node that matches value
     def remove(self, value):
         curr = self.head
