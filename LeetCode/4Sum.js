@@ -30,7 +30,7 @@ Constraints:
 var fourSum = function(nums, target) {
     let ans = [];
     const dp = Array(5).fill(0).map(() => Array(nums.length).fill(0).map(() => ({})))
-    
+
     function search(i, target, k) {
         // base cases
         // found a solution
@@ -44,24 +44,24 @@ var fourSum = function(nums, target) {
         if (dp[k][i][target]) {
             return dp[k][i][target];
         }
-        
+
         // can take or not take current
         dp[k][i][target] = [
             ...search(i+1, target-nums[i], k-1).map((el) => [nums[i], ...el]),
             ...search(i+1, target, k)
         ];
-            
+
         return dp[k][i][target];
     }
-    
-    
+
+
     return dedupe(search(0, target, 4));
 };
 
 function dedupe(arr) {
     const seen = new Set()
     const ans = []
-    
+
     for (const el of arr) {
         const key = el.sort((a, b) => a - b).join('|')
         if (!seen.has(key)) {
@@ -71,3 +71,50 @@ function dedupe(arr) {
     }
     return ans
 }
+
+// SOLUTION
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[][]}
+ */
+var fourSumSolution = function(nums, target) {
+    nums.sort((a, b) => a - b)
+
+    return kSum(nums, target, 4)
+
+    function kSum(nums, target, k) {
+        if (!nums.length || nums[0] * k > target || nums[nums.length-1] * k < target) {
+            return []
+        }
+        if (k === 2) {
+            return twoSum(nums, target)
+        }
+        let ans = []
+        for (let i = 0; i < nums.length; i++) {
+            // dedupe
+            if (i === 0 || nums[i] !== nums[i-1]) {
+                ans = ans.concat(
+                    kSum(nums.slice(i+1), target-nums[i], k-1).map((el) => [nums[i], ...el])
+                );
+            }
+        }
+        return ans
+    }
+
+    function twoSum(nums, target) {
+        const ans = []
+        const seen = new Set()
+
+        for (const n of nums) {
+            // dedupe
+            if (seen.has(target - n) && (!ans.length || ans[ans.length-1][1] !== n)) {
+                ans.push([target - n, n])
+            }
+            seen.add(n);
+        }
+
+        return ans;
+    }
+};
+
